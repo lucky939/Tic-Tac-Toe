@@ -3,7 +3,7 @@ let resetBtn=document.querySelector("#reset-btn");
 let newBtn=document.querySelector("#new-btn");
 let winnerContainer=document.querySelector("#winner");
 let msgContainer=document.querySelector(".msg-container");
-
+let count=0;
 
 let turnO=true;//player O turn 
 const winPatterns=[
@@ -31,20 +31,27 @@ boxes.forEach((boxy) =>{
         if(turnO){
             boxy.innerText="O";
             turnO = false; //player x turn 
+            count++;
         }
         else{
             boxy.innerText="X";
             turnO = true; // player o turn
+            count++;
         }
+        if(count==9 && !findWinner()){
+            displayDraw();
+            }
         boxy.disabled=true; 
         findWinner();
     });
 });
 
 const displayWinner = (winner) => {
+    
     winnerContainer.innerText=`YaY Player ${winner} won :)`;
+   
+   
     msgContainer.classList.remove("hide");
-
 }
 
 const findWinner=() =>{
@@ -56,14 +63,21 @@ const findWinner=() =>{
             if(pos0===pos1 && pos1===pos2){
     
                 boxes.forEach((boxy)=>{
-                    boxy.disabled=true;
+                    boxy.disabled=true; 
                 })
                 displayWinner(pos0);
+                return true;
             }
 
         }
     }
-}
+};
+
+const displayDraw=() =>{
+    winnerContainer.innerText="Draw Match! Try New Game"; 
+    msgContainer.classList.remove("hide");
+};
+
 
 resetBtn.addEventListener("click",resetGame);
 newBtn.addEventListener("click",resetGame);
